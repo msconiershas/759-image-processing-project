@@ -23,7 +23,7 @@ int main(int argc, char **argv) {
     exit(1);
   } 
   uchar4* h_out = NULL;
-  uchar4* h_image, *d_in;
+  uchar4* h_image, *d_in, *d_in2;
   string arg = string(argv[2]);
   string file = string(argv[1]);
   string output_file = "output.jpg";
@@ -42,7 +42,8 @@ int main(int argc, char **argv) {
     h_out = greyscale(d_in, num_rows, num_cols);
   }
   else if(arg == "-e" || arg == "-edge") {
-    h_out = edge_detect(d_in, num_rows, num_cols);
+    d_in2 = greyscale(d_in, num_rows, num_cols);
+    h_out = edge_detect(d_in2, num_rows, num_cols);
   }
   else {
     printf("INCORRECT ARGUMENTS\n");
@@ -52,6 +53,7 @@ int main(int argc, char **argv) {
 
     save_img(h_out, output_file, num_rows, num_cols);
     cudaFree(d_in);
+	cudaFree(d_in2);
 }
 
 
